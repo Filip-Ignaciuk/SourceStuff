@@ -1,2 +1,2 @@
-# Haxel-Mod
-Mod for source SDK base 2013 multiplayer.
+# Source Engine Code
+Code related to the source engine sdk base 2013. This is mainly experimental code just for fun.
