@@ -1,0 +1,8 @@
+To install this you will need some knowledge of the source engine, however I can give you some tips in installation.
+Copy the cpp file into your source engine server source code and copy the contents of the fgd file into your games fgd file. 
+To see your model in game make sure to link your fgd!
+
+-- Model --
+You can use your own custom model by replacing the define line. It's your choice.
+The model should be located in a particle folder within your game's models folder.
+The texture for the model should be located in a models\particle folder in your game's textures folder.

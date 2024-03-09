@@ -1,0 +1,13 @@
+@PointClass base(Targetname) studio("models/particle/particle.mdl")= wave_particle :  "wave_particle"
+[
+	MaxXVelocity(integer) : "Maximum X Velocity" : 0 : "Maximum velocity at the centre, in the x axis. Set to 0 if you don't want any motion within this axis."
+	MaxYVelocity(integer) : "Maximum Y Velocity" : 0 : "Maximum velocity at the centre, in the y axis. Set to 0 if you don't want any motion within this axis."
+	MaxZVelocity(integer) : "Maximum Z Velocity" : 0 : "Maximum velocity at the centre, in the z axis. Set to 0 if you don't want any motion within this axis."
+
+	ChangeInXVelocity(integer) : "Change In X Velocity" : 0 : "How quick or how slow you want your particle to accelerate in the x axis. Set to 0 if you don't want any motion within this axis."
+	ChangeInYVelocity(integer) : "Change In Y Velocity" : 0 : "How quick or how slow you want your particle to accelerate in the y axis. Set to 0 if you don't want any motion within this axis."
+	ChangeInZVelocity(integer) : "Change In Z Velocity" : 0 : "How quick or how slow you want your particle to accelerate in the z axis. Set to 0 if you don't want any motion within this axis."
+
+	input Toggle(void) : "Toggle movement."
+	
+]
