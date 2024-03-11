@@ -100,8 +100,8 @@ void CWaveParticle::Spawn(void)
 	Precache();
 
 	SetModel(ENTITY_MODEL);
-	SetSolid(SOLID_BBOX);
-	UTIL_SetSize(this, -Vector(20, 20, 20), Vector(20, 20, 20));
+	SetSolid(SOLID_VPHYSICS);
+	VPhysicsInitShadow(SOLID_VPHYSICS, 0, false);
 }
 
 
