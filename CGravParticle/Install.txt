@@ -1,0 +1,6 @@
+To install this you will need some knowledge of the source engine, however I can give you some tips in installation.
+Copy the cpp and hpp file into your source engine server source code and copy the contents of the fgd file into your games fgd file. 
+To see your model in game make sure to link your fgd!
+
+--Implementation--
+To make this work you need a grav particle handler, this controls all the behaviours of gravparticles, without this it won't work.
