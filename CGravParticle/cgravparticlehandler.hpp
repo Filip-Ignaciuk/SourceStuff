@@ -24,6 +24,7 @@ public:
 
 private:
 	static int maxNumOfGravParticles;
+	static const float gravConst = -9.81f;
 	CGravParticle* gParticles[maxNumOfGravParticles];
 
 };

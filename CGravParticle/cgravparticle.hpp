@@ -19,6 +19,8 @@ public:
 
 	void MoveThink(void);
 
+	float GetMass(void);
+
 	void InputToggle(inputdata_t& inputData);
 
 private:
@@ -27,7 +29,7 @@ private:
 	static char* m_model;
 	CGravParticleHandler* gParticleHandler;
 
-	int m_mass;
+	float m_mass;
 };
 
 #endif CGRAVPARTICLE

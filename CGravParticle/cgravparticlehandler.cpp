@@ -13,8 +13,6 @@ BEGIN_DATADESC(CGravParticleHandler)
 DEFINE_THINKFUNC(MoveThink),
 
 DEFINE_FIELD(maxNumOfGravParticles, FIELD_INTEGER),
-DEFINE_AUTO_ARRAY(gParticles, FIELD_CLASSPTR),
-
 
 
 
@@ -27,18 +25,63 @@ END_DATADESC()
 void CGravParticleHandler::MoveThink(void)
 {
 	// We start at one as we are just going to do every calculation with the first object
-	for (int i = 1; i < 64; i++)
-	{
-		Vector firstObjectVector = gParticles[0]->GetAbsOrigin();
-		if(gParticles[i])
-		{
-			Vector secondObjectVector = gParticles[i]->GetAbsOrigin();
+	Vector firstObjectVector;
+	Vector vFirstObjectInitialVelocity;
+	float firstObjectMass;
 
+
+	float secondObjectMass;
+	bool hasFirstObject = false;
+
+	for (int i = 0; i < 64; i++)
+	{
+		if(gParticles[i] && !hasFirstObject)
+		{
+			firstObjectVector = gParticles[0]->GetAbsOrigin();
+			vFirstObjectInitialVelocity = gParticles[0]->GetAbsVelocity();
+			firstObjectMass = PhysGetEntityMass(gParticles[0]);
+			hasFirstObject = true;
 		}
+		else if (hasFirstObject)
+		{
+			CGravParticle* gParticle = gParticles[i];
+			if (gParticle)
+			{
+				Vector secondObjectVector = gParticle->GetAbsOrigin();
+				if (gParticle->GetMass() == 0.0f)
+				{
+					secondObjectMass = PhysGetEntityMass(gParticle);
+				}
+				else
+				{
+					secondObjectMass = gParticle->GetMass();
+				}
+				float distance = firstObjectVector.DistTo(secondObjectVector);
+				// Final force
+				float force = gravConst * firstObjectMass * secondObjectMass / distance;
+
+
+				// For first object
+				float firstObjectAcceleration = force / firstObjectMass;
+				float fFirstObjectInitialVelocity = Sqr((vFirstObjectInitialVelocity.x * vFirstObjectInitialVelocity.x) + (vFirstObjectInitialVelocity.y * vFirstObjectInitialVelocity.y) + (vFirstObjectInitialVelocity.z * vFirstObjectInitialVelocity.z));
+				float firstObjectVelocity = fFirstObjectInitialVelocity + firstObjectAcceleration * 0.05;
+				float equalVector = cbrt(firstObjectVelocity);
+				Vector finalForce(equalVector, equalVector, equalVector);
+
+
+				// Second Object
+
+
+			}
+		}
+
+		
 
 	}
 
-	// Think at 20Hz
+	
+
+	// Think at 20 times per second
 	SetNextThink(gpGlobals->curtime + 0.05f);
 }
 

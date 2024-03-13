@@ -15,8 +15,8 @@ DEFINE_FIELD(m_mass, FIELD_INTEGER),
 
 
 // Seen in hammer
-DEFINE_KEYFIELD(m_model, FIELD_MODELNAME, "Model"),
-DEFINE_KEYFIELD(m_mass, FIELD_INTEGER, "Mass"),
+DEFINE_INPUT(m_model, FIELD_MODELNAME, "Model"),
+DEFINE_KEYFIELD(m_mass, FIELD_FLOAT, "Mass"),
 
 DEFINE_INPUTFUNC(FIELD_VOID, "Toggle", InputToggle),
 
@@ -49,7 +49,7 @@ void CGravParticle::Spawn(void)
 	CBaseEntity* resultPtr = gEntList.FindEntityByClassname(NULL, "grav_handler");
 	while (resultPtr)
 	{
-		gParticleHandler = dynamic_cast<cgravparticleHandler*>(resultPtr);
+		gParticleHandler = dynamic_cast<CGravParticleHandler*>(resultPtr);
 	}
 
 	gParticleHandler->AddGravParticle(this);
@@ -66,6 +66,12 @@ void CGravParticle::MoveThink(void)
 	// Think at 20Hz
 	SetNextThink(gpGlobals->curtime + 0.05f);
 }
+
+float CGravParticle::GetMass(void)
+{
+	return m_mass;
+}
+
 
 //-----------------------------------------------------------------------------
 // Purpose: Toggle the movement of the entity
