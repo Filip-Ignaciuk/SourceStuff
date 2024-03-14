@@ -45,6 +45,7 @@ void CGravParticle::Spawn(void)
 	SetModel(m_model);
 	SetSolid(SOLID_VPHYSICS);
 	VPhysicsInitNormal(SOLID_VPHYSICS, 0, false);
+	CGravParticleHandler* gParticleHandler;
 
 	CBaseEntity* resultPtr = gEntList.FindEntityByClassname(NULL, "grav_handler");
 	while (resultPtr)

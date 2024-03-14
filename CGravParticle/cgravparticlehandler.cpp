@@ -12,8 +12,6 @@ BEGIN_DATADESC(CGravParticleHandler)
 
 DEFINE_THINKFUNC(MoveThink),
 
-DEFINE_FIELD(maxNumOfGravParticles, FIELD_INTEGER),
-
 
 
 END_DATADESC()
@@ -25,55 +23,65 @@ END_DATADESC()
 void CGravParticleHandler::MoveThink(void)
 {
 	// We start at one as we are just going to do every calculation with the first object
-	Vector firstObjectVector;
-	Vector vFirstObjectInitialVelocity;
+	Vector firstObjectPosition;
 	float firstObjectMass;
 
-
+	Vector secondObjectPosition;
 	float secondObjectMass;
-	bool hasFirstObject = false;
 
 	for (int i = 0; i < 64; i++)
 	{
-		if(gParticles[i] && !hasFirstObject)
+		CBaseEntity* base1 = gParticles[i];
+		if (base1)
 		{
-			firstObjectVector = gParticles[0]->GetAbsOrigin();
-			vFirstObjectInitialVelocity = gParticles[0]->GetAbsVelocity();
-			firstObjectMass = PhysGetEntityMass(gParticles[0]);
-			hasFirstObject = true;
-		}
-		else if (hasFirstObject)
-		{
-			CGravParticle* gParticle = gParticles[i];
-			if (gParticle)
+			CGravParticle* gParticle1 = dynamic_cast<CGravParticle*>(base1);
+			firstObjectPosition = gParticle1->GetAbsOrigin();
+			if (gParticle1->GetMass() == 0.0f)
 			{
-				Vector secondObjectVector = gParticle->GetAbsOrigin();
-				if (gParticle->GetMass() == 0.0f)
+				firstObjectMass = PhysGetEntityMass(gParticle1);
+			}
+			else
+			{
+				firstObjectMass = gParticle1->GetMass();
+			}
+
+
+			for (int j = 0; j < 64; j++)
+			{
+				CBaseEntity* base2= gParticles[j];
+
+				if (base2)
 				{
-					secondObjectMass = PhysGetEntityMass(gParticle);
+					CGravParticle* gParticle2 = dynamic_cast<CGravParticle*>(base1);
+
+					secondObjectPosition = gParticle2->GetAbsOrigin();
+					if (gParticle2->GetMass() == 0.0f)
+					{
+						secondObjectMass = PhysGetEntityMass(gParticle2);
+					}
+					else
+					{
+						secondObjectMass = gParticle2->GetMass();
+					}
+
+
+					float distance = firstObjectPosition.DistTo(secondObjectPosition);
+					// Final force
+					float force = gravConst * firstObjectMass * secondObjectMass / distance;
+					Vector direction = firstObjectPosition - secondObjectPosition;
+					direction = direction.Normalized() * force;
+					gParticle1->ApplyAbsVelocityImpulse(direction);
+
+
 				}
-				else
-				{
-					secondObjectMass = gParticle->GetMass();
-				}
-				float distance = firstObjectVector.DistTo(secondObjectVector);
-				// Final force
-				float force = gravConst * firstObjectMass * secondObjectMass / distance;
-
-
-				// For first object
-				float firstObjectAcceleration = force / firstObjectMass;
-				float fFirstObjectInitialVelocity = Sqr((vFirstObjectInitialVelocity.x * vFirstObjectInitialVelocity.x) + (vFirstObjectInitialVelocity.y * vFirstObjectInitialVelocity.y) + (vFirstObjectInitialVelocity.z * vFirstObjectInitialVelocity.z));
-				float firstObjectVelocity = fFirstObjectInitialVelocity + firstObjectAcceleration * 0.05;
-				float equalVector = cbrt(firstObjectVelocity);
-				Vector finalForce(equalVector, equalVector, equalVector);
-
-
-				// Second Object
 
 
 			}
+
+
 		}
+
+		
 
 		
 
@@ -88,30 +96,33 @@ void CGravParticleHandler::MoveThink(void)
 //-----------------------------------------------------------------------------
 // Purpose: Adding particle to list.
 //-----------------------------------------------------------------------------
-void CGravParticleHandler::AddGravParticle(CGravParticle* _gParticlePtr)
+void CGravParticleHandler::AddGravParticle(CBaseEntity* _basePtr)
 {
 	// Check if it's not null
-	if(_gParticlePtr)
+	if(_basePtr)
 	{
+		CGravParticle* gParticlePtr = dynamic_cast<CGravParticle*>(_basePtr);
 		for (int i = 0; i < 64; i++)
 		{
 			if (!gParticles[i])
 			{
-				gParticles[i] = _gParticlePtr;
+				gParticles[i] = gParticlePtr;
 				break;
 			}
 		}
 	}
 }
 
-void CGravParticleHandler::RemoveGravParticle(CGravParticle* _gParticlePtr)
+void CGravParticleHandler::RemoveGravParticle(CBaseEntity* _basePtr)
 {
 	// Check if it's not null
-	if (_gParticlePtr)
+	if (_basePtr)
 	{
+		CGravParticle* gParticlePtr = dynamic_cast<CGravParticle*>(_basePtr);
+
 		for (int i = 0; i < 64; i++)
 		{
-			if(gParticles[i] == _gParticlePtr)
+			if(gParticles[i] == gParticlePtr)
 			{
 				gParticles[i] = nullptr;
 				break;

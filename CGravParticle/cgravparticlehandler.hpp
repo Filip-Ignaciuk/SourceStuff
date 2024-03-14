@@ -19,13 +19,12 @@ public:
 	void MoveThink(void);
 
 
-	void AddGravParticle(CGravParticle* _gParticlePtr);
-	void RemoveGravParticle(CGravParticle* _gParticlePtr);
+	void AddGravParticle(CBaseEntity* _gParticlePtr);
+	void RemoveGravParticle(CBaseEntity* _gParticlePtr);
 
 private:
-	static int maxNumOfGravParticles;
-	static const float gravConst = -9.81f;
-	CGravParticle* gParticles[maxNumOfGravParticles];
+	float gravConst = -9.81f;
+	CBaseEntity* gParticles[64];
 
 };
 

@@ -27,8 +27,6 @@ private:
 
 	bool m_active;
 	static char* m_model;
-	CGravParticleHandler* gParticleHandler;
-
 	float m_mass;
 };
 
