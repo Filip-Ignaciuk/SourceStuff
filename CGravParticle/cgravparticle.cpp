@@ -51,9 +51,10 @@ void CGravParticle::Spawn(void)
 	while (resultPtr)
 	{
 		gParticleHandler = dynamic_cast<CGravParticleHandler*>(resultPtr);
+		gParticleHandler->AddGravParticle(this);
+
 	}
 
-	gParticleHandler->AddGravParticle(this);
 
 }
 

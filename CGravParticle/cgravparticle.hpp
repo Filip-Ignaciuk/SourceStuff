@@ -26,7 +26,7 @@ public:
 private:
 
 	bool m_active;
-	static char* m_model;
+	const char* m_model;
 	float m_mass;
 };
 
