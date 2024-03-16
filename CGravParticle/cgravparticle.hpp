@@ -17,9 +17,8 @@ public:
 	void Spawn(void);
 	void Precache(void);
 
-	void MoveThink(void);
-
 	float GetMass(void);
+	bool IsActivated(void);
 
 	void InputToggle(inputdata_t& inputData);
 
